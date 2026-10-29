@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva tu Estancia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#1e40af'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden">
+
+    <!-- Navegación -->
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-bold text-primary">Depto<span class="text-slate-800">Top</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#inicio" class="text-slate-600 hover:text-primary transition-colors font-medium">Inicio</a>
+                    <a href="#nosotros" class="text-slate-600 hover:text-primary transition-colors font-medium">Nosotros</a>
+                    <a href="#ubicacion" class="text-slate-600 hover:text-primary transition-colors font-medium">Ubicación</a>
+                    <a href="#reservas" class="bg-primary hover:bg-secondary text-white px-5 py-2 rounded-full font-medium transition-all shadow-md shadow-primary/20">Reservar Ahora</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-primary focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 absolute w-full shadow-lg">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="#inicio" class="block px-3 py-2 text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50 rounded-md">Inicio</a>
+                <a href="#nosotros" class="block px-3 py-2 text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50 rounded-md">Nosotros</a>
+                <a href="#ubicacion" class="block px-3 py-2 text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50 rounded-md">Ubicación</a>
+                <a href="#reservas" class="block w-full text-center mt-4 bg-primary text-white px-5 py-3 rounded-full font-medium shadow-md">Reservar Ahora</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sección Hero -->
+    <section id="inicio" class="pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden relative">
+        <div class="absolute inset-0 z-0 bg-gradient-to-br from-blue-50 to-white"></div>
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-primary/5 blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-secondary/5 blur-3xl"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 mb-6">
+                Descubre tu <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">refugio ideal</span>
+            </h1>
+            <p class="mt-4 max-w-2xl text-lg md:text-xl text-slate-600 mx-auto mb-10">
+                Tu alojamiento favorito en Concepción: Silencio, Productividad y Descanso Real.
+            </p>
+            <div class="flex justify-center gap-4">
+                <a href="#reservas" class="bg-primary hover:bg-secondary text-white px-8 py-4 rounded-full font-semibold transition-all shadow-lg shadow-primary/30 transform hover:-translate-y-1">
+                    Ver Disponibilidad
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Reservas (Calendario) -->
+    <section id="reservas" class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Reserva tus fechas</h2>
+                <p class="text-slate-600">Elige tu tipo de estadía y selecciona las fechas.</p>
+            </div>
+
+            <!-- AQUÍ VAN LAS TARJETAS -->
+            <div class="mb-12">
+                <!-- Selector de Tarifas (Psicología de Precios y Estados) --> 
+                <div class="mt-8 mb-4 border-t border-slate-200 pt-6">     
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4 text-center">Elige tu tipo de estadía</p>          
+                    <div class="flex flex-col md:flex-row gap-6 items-stretch mt-6" id="pricing-cards-container">                  
+                        
+                        <!-- TARJETA 1: EL SEÑUELO (1 noche) -->         
+                        <div class="pricing-card flex-1 flex flex-col justify-between p-5 rounded-2xl bg-slate-50 border-2 border-transparent transition-all cursor-pointer opacity-80 hover:opacity-100" data-nights="1">             
+                            <div>                 
+                                <div class="flex items-center gap-2 mb-2 text-slate-500">                     
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>                     
+                                    <h5 class="font-semibold text-slate-700">Estadía Exprés</h5>                 
+                                </div>                 
+                                <p class="text-xs text-slate-500 mb-4">1 noche</p>                 
+                                <div class="mb-1">                     
+                                    <span class="text-xl font-medium text-slate-600">$53.000</span>                     
+                                    <span class="text-xs text-slate-500">CLP</span>                 
+                                </div>                 
+                                <p class="text-[10px] text-slate-400 mb-6">Incluye limpieza profunda</p>             
+                            </div>             
+                            <button type="button" class="w-full py-2.5 border-2 border-slate-300 text-slate-600 rounded-xl font-medium text-sm hover:bg-slate-200 transition-colors pointer-events-none">                 
+                                Seleccionar 1 noche             
+                            </button>         
+                        </div>          
+                        
+                        <!-- TARJETA 2: LA MEJOR OFERTA (2 noches) -->         
+                        <div class="pricing-card flex-1 relative flex flex-col justify-between p-6 rounded-2xl bg-white border-2 border-blue-600 shadow-xl shadow-blue-600/10 transform md:-translate-y-2 cursor-pointer transition-all" data-nights="2">             
+                            <!-- Badge Recomendado -->             
+                            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 md:left-auto md:right-4 md:translate-x-0 bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wide whitespace-nowrap shadow-sm z-10">                 
+                                ⭐ Recomendado             
+                            </div>             
+                            <!-- Check de selección (oculto por defecto, aparece al seleccionar) -->             
+                            <div class="absolute top-4 right-4 bg-blue-600 text-white rounded-full p-1 hidden check-icon z-10">                 
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>             
+                            </div>             
+                            <div>                 
+                                <div class="flex items-center gap-2 mb-2 text-blue-600">                     
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>                     
+                                    <h5 class="font-bold text-slate-800">La Más Elegida</h5>                 
+                                </div>                 
+                                <p class="text-xs text-slate-500 mb-4">2 noches</p>                 
+                                <div class="mb-1 flex items-baseline gap-1">                     
+                                    <span class="text-2xl font-extrabold text-blue-600">$45.500</span>                     
+                                    <span class="text-xs font-medium text-blue-600">CLP / noche</span>                 
+                                </div>                 
+                                <p class="text-xs text-slate-400 line-through mb-2">Antes: $91.000</p>                 
+                                <div class="bg-green-50 text-green-600 text-sm font-bold px-2 py-1 rounded-md inline-block mb-6">                     
+                                    ¡Ahorras $15.000!                 
+                                </div>             
+                            </div>             
+                            <button type="button" class="w-full py-3 bg-blue-600 text-white rounded-xl font-bold text-sm shadow-md shadow-blue-600/30 hover:bg-blue-700 transition-colors pointer-events-none">                 
+                                Seleccionar 2 noches             
+                            </button>         
+                        </div>          
+                        
+                        <!-- TARJETA 3: ANCLA ALTA (3+ noches) -->         
+                        <div class="pricing-card flex-1 flex flex-col justify-between p-5 rounded-2xl bg-white border-2 border-slate-200 hover:border-blue-300 transition-all cursor-pointer" data-nights="3">             
+                            <div>                 
+                                <div class="flex items-center gap-2 mb-2 text-slate-700">                     
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>                     
+                                    <h5 class="font-semibold text-slate-800">Estadía Larga</h5>                 
+                                </div>                 
+                                <p class="text-xs text-slate-500 mb-4">3+ noches</p>                 
+                                <div class="mb-1">                     
+                                    <span class="text-xs text-slate-500">Desde</span>                     
+                                    <span class="text-xl font-bold text-slate-800">$37.000</span>                     
+                                    <span class="text-xs text-slate-500">CLP / noche</span>                 
+                                </div>                 
+                                <div class="bg-green-50 text-green-600 text-xs font-medium px-2 py-1 rounded-md inline-block mb-6">                     
+                                    Ahorra hasta un 30%                 
+                                </div>             
+                            </div>             
+                            <button type="button" class="w-full py-2.5 border-2 border-blue-600 text-blue-600 rounded-xl font-medium text-sm hover:bg-blue-50 transition-colors pointer-events-none">                 
+                                Seleccionar 3+ noches             
+                            </button>             
+                            <!-- Check de selección (oculto por defecto) -->             
+                            <div class="absolute top-4 right-4 bg-blue-600 text-white rounded-full p-1 hidden check-icon z-10">                 
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>             
+                            </div>         
+                        </div>     
+                    </div>      
+                    
+                    <!-- Enlace de Larga Estadía -->     
+                    <div class="text-center mt-6">         
+                        <a href="#" id="long-stay-link" class="text-sm text-slate-500 hover:text-blue-600 underline underline-offset-4 transition-colors">             
+                            ¿Vienes por más de una semana? Haz clic aquí para ver nuestras tarifas de Larga Estadía y Nómadas Digitales         
+                        </a>     
+                    </div> 
+                </div>
+            </div>
+
+            <!-- Contenedor principal del widget -->
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden flex flex-col md:flex-row relative min-h-[500px]">
+                
+                <!-- Columna Izquierda: Calendario -->
+                <div class="w-full md:w-1/2 p-6 md:p-8 bg-slate-50/50 border-r border-slate-100">
+                    <div class="flex justify-between items-center mb-6">
+                        <button id="prev-month" class="p-2 rounded-full hover:bg-slate-200 text-slate-600 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        </button>
+                        <h3 id="month-year" class="text-lg font-bold text-slate-800 capitalize"></h3>
+                        <button id="next-month" class="p-2 rounded-full hover:bg-slate-200 text-slate-600 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-slate-500 mb-4">
+                        <div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sa</div>
+                    </div>
+                    
+                    <div id="calendar-days" class="grid grid-cols-7 gap-y-2 gap-x-1"></div>
+                    
+                    <div class="mt-8 flex justify-between items-center text-sm border-t border-slate-200 pt-4">
+                        <div class="flex flex-col">
+                            <span class="text-slate-500 text-xs uppercase tracking-wider">Entrada</span>
+                            <span id="checkin-display" class="font-semibold text-slate-800">--/--/----</span>
+                        </div>
+                        <div class="w-px h-8 bg-slate-200 mx-4"></div>
+                        <div class="flex flex-col text-right">
+                            <span class="text-slate-500 text-xs uppercase tracking-wider">Salida</span>
+                            <span id="checkout-display" class="font-semibold text-slate-800">--/--/----</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center justify-center gap-4 text-xs text-slate-500">
+                        <div class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-red-100 border border-red-200"></span> Ocupado</div>
+                        <div class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-primary/20"></span> Seleccionado</div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Paneles Dinámicos -->
+                <div class="w-full md:w-1/2 relative overflow-hidden bg-white">
+                    
+                    <!-- Panel 1: Instrucciones -->
+                    <div id="time-panel" class="absolute inset-0 p-8 flex flex-col justify-center items-center text-center transition-transform duration-500 transform translate-x-0">
+                        <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 text-primary">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <h4 class="text-xl font-bold text-slate-800 mb-2">Selecciona tus fechas</h4>
+                        <p class="text-slate-500 text-sm">Haz clic en el calendario para elegir tu fecha de llegada, y luego elige tu fecha de salida.</p>
+                    </div>
+
+                    <!-- Panel 2: Formulario -->
+                    <div id="form-panel" class="absolute inset-0 p-8 flex flex-col transition-transform duration-500 transform translate-x-full bg-white overflow-y-auto">
+                        <button id="btn-back" class="flex items-center text-sm text-slate-500 hover:text-primary mb-6 transition-colors">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                            Volver al calendario
+                        </button>
+                        
+                        <h4 class="text-xl font-bold text-slate-800 mb-1">Completa tu reserva</h4>
+                        
+                        <!-- Recuadro de resumen con precios divididos --> 
+                        <div id="form-summary" class="flex justify-between items-center text-sm mb-6 p-3 bg-slate-50 rounded-lg border border-slate-100">     
+                            <div class="flex flex-col text-slate-600 leading-relaxed" id="summary-dates"></div>          
+                            <div class="flex flex-col text-right leading-relaxed" id="summary-prices"></div> 
+                        </div>
+
+                        <form id="booking-form" class="space-y-4 flex-grow">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Nombre completo</label>
+                                <input type="text" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Ej. Juan Pérez">
+                            </div>
+                            <div class="flex items-center mt-2 mb-4">
+                                <input type="checkbox" id="parking-check" class="w-5 h-5 text-primary bg-slate-50 border-slate-300 rounded focus:ring-primary focus:ring-2 cursor-pointer">
+                                <label for="parking-check" class="ml-3 text-sm font-medium text-slate-700 cursor-pointer">
+                                    Incluir estacionamiento gratis
+                                </label>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Huéspedes</label>
+                                <select class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
+                                    <option>1 Huésped</option>
+                                    <option>2 Huéspedes</option>
+                                    <option>3 Huéspedes</option>
+                                    <option>4 Huéspedes</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="w-full mt-4 bg-primary hover:bg-secondary text-white py-3 rounded-xl font-medium transition-all shadow-md shadow-primary/20">
+                                Confirmar Reserva
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Panel 3: Éxito -->
+                    <div id="success-panel" class="absolute inset-0 p-8 flex flex-col justify-center items-center text-center transition-transform duration-500 transform translate-x-full bg-white z-10">
+                        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6 text-green-500">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <h4 class="text-2xl font-bold text-slate-800 mb-2">¡Solicitud Enviada!</h4>
+                        <p class="text-slate-500 mb-6">Hemos recibido tu solicitud de reserva <span id="success-date" class="font-semibold text-slate-700"></span>. Te contactaremos pronto para confirmar.</p>
+                        <button id="btn-reset" class="px-6 py-2 border-2 border-slate-200 text-slate-600 hover:border-primary hover:text-primary rounded-full font-medium transition-all">
+                            Hacer otra reserva
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Ubicación (Mapa) -->
+    <section id="ubicacion" class="py-20 bg-slate-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Nuestra Ubicación</h2>
+                <p class="text-slate-600 mb-2">Estamos en el corazón de la ciudad, listos para recibirte.</p>
+                <p class="text-sm font-medium text-slate-800 mb-6">
+                    📍 Avenida Ignacio Collao 430, Concepción
+                </p>
+            </div>
+
+            <!-- Contenedor del Mapa con enlace -->
+            <div class="rounded-3xl overflow-hidden shadow-xl border border-slate-200 relative group">
+                
+                <!-- ENLACE: Al hacer clic, abre Google Maps -->
+                <a href="https://maps.google.com/?q=Avenida+Ignacio+Collao+430,+Concepcion" target="_blank" rel="noopener noreferrer" class="block relative">
+                    
+                    <!-- Código de Google Maps (Reemplazado con tu URL) -->
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3194.0677877432736!2d-73.0250827!3d-36.8168955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9669b43bb7efeb6b%3A0xe22c1d9e716558fe!2sAvenida%20Ignacio%20Collao%20430%2C%204050061%20Concepci%C3%B3n%2C%20B%C3%ADo%20B%C3%ADo%2C%20Chile!5e0!3m2!1ses-419!2sar!4v1793246183904!5m2!1ses-419!2sar" 
+                        width="100%" 
+                        height="400" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        class="w-full grayscale-[30%] group-hover:grayscale-0 transition-all duration-500">
+                    </iframe>
+
+                    <!-- Capa visual (Aparece al pasar el mouse, indicando que es clickeable) -->
+                    <div class="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/10 transition-colors flex items-center justify-center">
+                        <span class="bg-white text-blue-600 font-bold py-3 px-6 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            Abrir en Google Maps
+                        </span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="text-2xl font-bold text-white">Depto<span class="text-primary">Top</span></span>
+                <p class="text-slate-400 mt-2 text-sm">Tu descanso, nuestra prioridad.</p>
+            </div>
+            <div class="text-slate-400 text-sm">
+                &copy; 2026 DeptoTop. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lógica de Interacción -->
+    <script>
+        // Menú Móvil
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileBtn.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        for (let i = 0; i < mobileLinks.length; i++) {
+            mobileLinks[i].addEventListener('click', function() {
+                mobileMenu.classList.add('hidden');
+            });
+        }
+
+        // Lógica del Calendario de Reservas
+        function initBookingSystem() {
+            const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            
+            let today = new Date();
+            let currentMonth = today.getMonth();
+            let currentYear = today.getFullYear();
+            let checkinDate = null;
+            let checkoutDate = null;
+
+            let bookedDates = [];
+
+            const monthYearText = document.getElementById('month-year');
+            const calendarDays = document.getElementById('calendar-days');
+            const checkinDisplay = document.getElementById('checkin-display');
+            const checkoutDisplay = document.getElementById('checkout-display');
+            
+            const timePanel = document.getElementById('time-panel');
+            const formPanel = document.getElementById('form-panel');
+            const successPanel = document.getElementById('success-panel');
+            
+            if (!monthYearText) return;
+
+            // Guardamos el HTML original del panel de instrucciones para restaurarlo si se vuelve atrás
+            const originalTimePanelHTML = timePanel.innerHTML;
+
+            // Función para resaltar la tarjeta correcta según las noches
+            function highlightCardByNights(nights) {
+                const pricingCards = document.querySelectorAll('.pricing-card');
+                if (pricingCards.length < 3) return;
+
+                // 1. Resetear todas
+                pricingCards.forEach(c => {
+                    c.classList.remove('border-blue-600', 'shadow-xl', 'shadow-blue-600/10', 'shadow-blue-600/20');
+                    c.classList.add('border-slate-200');
+                    c.style.borderWidth = '2px';
+
+                    const check = c.querySelector('.check-icon');
+                    if (check) check.classList.add('hidden');
+                });
+
+                // 2. Seleccionar la correcta
+                let targetCard = null;
+                if (nights === 1) targetCard = pricingCards[0]; // Tarjeta 1
+                else if (nights === 2) targetCard = pricingCards[1]; // Tarjeta 2
+                else if (nights >= 3) targetCard = pricingCards[2]; // Tarjeta 3
+
+                if (targetCard) {
+                    targetCard.classList.remove('border-slate-200');
+                    targetCard.classList.add('border-blue-600', 'shadow-xl', 'shadow-blue-600/20');
+                    targetCard.style.borderWidth = '3px';
+                    
+                    const activeCheck = targetCard.querySelector('.check-icon');
+                    if (activeCheck) activeCheck.classList.remove('hidden');
+                }
+            }
+
+            function formatDateString(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return year + '-' + month + '-' + day;
+            }
+
+            async function syncICal() {
+                const urlIcal = 'https://www.airbnb.com.ar/calendar/ical/1338274582955599701.ics?t=118dd72edc844a40a845a99a326309e2';
+                
+                if (!urlIcal) {
+                    bookedDates = ["2026-11-05", "2026-11-06", "2026-11-15", "2026-11-16"];
+                    renderCalendar();
+                    return;
+                }
+
+                try {
+                    let data = '';
+                    const proxyUrl = 'https://calendario-proxy.arriendodiarioconcepcion.workers.dev/?url=' + encodeURIComponent(urlIcal);
+                    const response = await fetch(proxyUrl);
+                    
+                    if (!response.ok) throw new Error("Fallo al conectar con el proxy personalizado");
+                    data = await response.text();
+
+                    if (!data) throw new Error("El archivo iCal está vacío o no se pudo descargar.");
+                    
+                    let currentEvent = {};
+                    let extractedDates = [];
+                    const lines = data.split(/\r?\n/);
+
+                    for (let i = 0; i < lines.length; i++) {
+                        const line = lines[i];
+                        if (line.startsWith('BEGIN:VEVENT')) {
+                            currentEvent = {};
+                        } else if (line.startsWith('END:VEVENT')) {
+                            if (currentEvent.start && currentEvent.end) {
+                                let start = new Date(currentEvent.start);
+                                let end = new Date(currentEvent.end);
+                                while (start < end) {
+                                    extractedDates.push(formatDateString(start));
+                                    start.setDate(start.getDate() + 1);
+                                }
+                            }
+                        } else if (line.includes('DTSTART')) {
+                            const match = line.match(/:(\d{4})(\d{2})(\d{2})/);
+                            if (match) currentEvent.start = new Date(match[1], match[2] - 1, match[3]);
+                        } else if (line.includes('DTEND')) {
+                            const match = line.match(/:(\d{4})(\d{2})(\d{2})/);
+                            if (match) currentEvent.end = new Date(match[1], match[2] - 1, match[3]);
+                        }
+                    }
+                    
+                    bookedDates = extractedDates;
+                    renderCalendar();
+                } catch (error) {
+                    console.error("Error sincronizando el iCal:", error);
+                    renderCalendar();
+                }
+            }
+
+            function renderCalendar() {
+                calendarDays.innerHTML = '';
+                const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+                
+                monthYearText.textContent = monthNames[currentMonth] + " " + currentYear;
+                
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyDiv = document.createElement('div');
+                    calendarDays.appendChild(emptyDiv);
+                }
+                
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const dayBtn = document.createElement('button');
+                    dayBtn.textContent = i;
+                    
+                    const cellDate = new Date(currentYear, currentMonth, i);
+                    const dateStr = formatDateString(cellDate);
+                    const isPast = cellDate.setHours(0,0,0,0) < today.setHours(0,0,0,0);
+                    const isBooked = bookedDates.includes(dateStr);
+
+                    let btnClass = "w-10 h-10 mx-auto rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200 ";
+
+                    if (isPast) {
+                        btnClass += "text-slate-300 cursor-not-allowed";
+                        dayBtn.disabled = true;
+                    } else if (isBooked) {
+                        btnClass += "bg-red-50 text-red-300 line-through cursor-not-allowed";
+                        dayBtn.disabled = true;
+                    } else {
+                        const isCheckin = checkinDate && cellDate.getTime() === checkinDate.getTime();
+                        const isCheckout = checkoutDate && cellDate.getTime() === checkoutDate.getTime();
+                        const isInRange = checkinDate && checkoutDate && cellDate > checkinDate && cellDate < checkoutDate;
+
+                        if (isCheckin || isCheckout) {
+                            btnClass += "bg-primary text-white shadow-md shadow-primary/30";
+                        } else if (isInRange) {
+                            btnClass += "bg-primary/10 text-primary";
+                        } else {
+                            btnClass += "text-slate-700 hover:bg-slate-100";
+                        }
+
+                        dayBtn.className = btnClass;
+                        dayBtn.addEventListener('click', function() { handleDateClick(cellDate); });
+                    }
+                    
+                    if (isPast || isBooked) dayBtn.className = btnClass;
+                    calendarDays.appendChild(dayBtn);
+                }
+            }
+
+            function handleDateClick(clickedDate) {
+                if (!checkinDate || (checkinDate && checkoutDate)) {
+                    checkinDate = clickedDate;
+                    checkoutDate = null;
+                    
+                    // ANCLA DE PRECIO
+                    timePanel.innerHTML = `
+                        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6 text-green-600 animate-bounce">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <h4 class="text-xl font-bold text-slate-800 mb-2">¡Buena elección!</h4>
+                        <p class="text-slate-500 text-sm mb-4">Sabías que si te quedas <strong>3 noches o más</strong>, la tarifa baja a <strong class="text-primary">$37.000</strong> por noche.</p>
+                        <p class="text-sm text-slate-600">Ahora selecciona tu <strong>fecha de salida</strong> en el calendario para ver el total.</p>
+                    `;
+                } else if (clickedDate > checkinDate) {
+                    checkoutDate = clickedDate;
+                    showForm();
+                } else {
+                    checkinDate = clickedDate;
+                    checkoutDate = null;
+                }
+                
+                updateDisplay();
+                renderCalendar();
+            }
+
+            function updateDisplay() {
+                const options = { day: 'numeric', month: 'short' };
+                checkinDisplay.textContent = checkinDate ? checkinDate.toLocaleDateString('es-ES', options) : '--/--/----';
+                checkoutDisplay.textContent = checkoutDate ? checkoutDate.toLocaleDateString('es-ES', options) : '--/--/----';
+            }
+
+            function showForm() {
+                if (!checkinDate || !checkoutDate) return;
+                
+                const options = { weekday: 'short', day: 'numeric', month: 'long' };
+                const inStr = checkinDate.toLocaleDateString('es-ES', options);
+                const outStr = checkoutDate.toLocaleDateString('es-ES', options);
+                const nights = Math.round((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
+                
+                highlightCardByNights(nights);
+
+                let precioPorNoche = 0;
+                let descuentoPorcentaje = 0;
+                let descuentoTexto = "";
+
+                if (nights === 1) { precioPorNoche = 53000; } 
+                else if (nights === 2) { precioPorNoche = 45500; } 
+                else if (nights >= 3 && nights < 7) { precioPorNoche = 37000; } 
+                else if (nights >= 7 && nights < 30) {
+                    precioPorNoche = 37000;
+                    descuentoPorcentaje = 0.20;
+                    descuentoTexto = "-20%";
+                } else if (nights >= 30) {
+                    precioPorNoche = 37000;
+                    descuentoPorcentaje = 0.40;
+                    descuentoTexto = "-40%";
+                }
+
+                let precioBaseTotal = precioPorNoche * nights;
+                let descuentoMonto = precioBaseTotal * descuentoPorcentaje;
+                let totalFinal = precioBaseTotal - descuentoMonto;
+
+                const summaryDates = document.getElementById('summary-dates');
+                summaryDates.innerHTML = '<span>Entrada: <strong class="text-slate-800">' + inStr + '</strong></span>' +
+                                         '<span>Salida: <strong class="text-slate-800">' + outStr + '</strong></span>' +
+                                         '<span class="text-primary font-bold">' + nights + ' noches</span>';
+
+                const summaryPrices = document.getElementById('summary-prices');
+                let htmlPrecios = '<span>Tarifa: <strong>$' + precioPorNoche.toLocaleString('es-AR') + '</strong></span>';
+                
+                if (descuentoPorcentaje > 0) {
+                    htmlPrecios += '<span class="text-green-600 font-medium">Dcto: ' + descuentoTexto + '</span>';
+                }
+                
+                htmlPrecios += '<span class="text-lg text-primary font-bold mt-1">Total: <span id="total-price-display">$' + totalFinal.toLocaleString('es-AR') + '</span></span>';
+                
+                summaryPrices.innerHTML = htmlPrecios;
+
+                ['tarifa-1', 'tarifa-2', 'tarifa-3', 'tarifa-7', 'tarifa-30'].forEach(function(id) {
+                    const el = document.getElementById(id);
+                    if(el) el.className = "flex justify-between items-center p-2 bg-slate-50 rounded-lg text-slate-600 transition-colors";
+                });
+
+                let activeId = '';
+                if (nights === 1) activeId = 'tarifa-1';
+                else if (nights === 2) activeId = 'tarifa-2';
+                else if (nights >= 3 && nights < 7) activeId = 'tarifa-3';
+                else if (nights >= 7 && nights < 30) activeId = 'tarifa-7';
+                else if (nights >= 30) activeId = 'tarifa-30';
+
+                if (activeId) {
+                    const activeEl = document.getElementById(activeId);
+                    if (activeEl) {
+                        activeEl.className = "flex justify-between items-center p-2 bg-primary/10 border border-primary/30 rounded-lg text-primary font-bold transition-colors transform scale-105 shadow-sm";
+                    }
+                }
+
+                timePanel.classList.add('-translate-x-full');
+                timePanel.classList.remove('translate-x-0');
+                formPanel.classList.remove('translate-x-full');
+                formPanel.classList.add('translate-x-0');
+            }
+
+            // LÓGICA DE SELECCIÓN VISUAL DE TARJETAS
+            const pricingCards = document.querySelectorAll('.pricing-card');  
+            
+            // Inicializar con 2 noches por defecto
+            if(pricingCards.length > 0) {
+                setTimeout(() => {
+                    // Simulamos la selección de la tarjeta central al cargar
+                    const noches = parseInt(pricingCards[1].getAttribute('data-nights'));
+                    let baseDate = new Date();
+                    baseDate.setHours(0,0,0,0);
+
+                    checkinDate = new Date(baseDate);
+                    checkoutDate = new Date(baseDate);
+                    checkoutDate.setDate(checkoutDate.getDate() + noches);
+                    updateDisplay();
+                    renderCalendar();
+                    highlightCardByNights(noches);
+                }, 100);
+            }
+            
+            pricingCards.forEach(card => {     
+                card.addEventListener('click', function() {         
+                    const noches = parseInt(this.getAttribute('data-nights'));                                          
+                    
+                    // Actualizamos fechas
+                    let baseDate = checkinDate ? new Date(checkinDate) : new Date();         
+                    baseDate.setHours(0,0,0,0);                   
+                    
+                    checkinDate = new Date(baseDate);         
+                    checkoutDate = new Date(baseDate);         
+                    checkoutDate.setDate(checkoutDate.getDate() + noches);                  
+                    
+                    updateDisplay();         
+                    renderCalendar();                  
+                    
+                    // Pintamos la tarjeta
+                    highlightCardByNights(noches);
+
+                    // 4. UX: Hacer un scroll suave hacia el calendario para que vea reflejada su elección
+                    document.getElementById('calendar-days').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }); 
+            });  
+            
+            // Enlace de Larga Estadía (hace scroll al calendario para que elija más días) 
+            document.getElementById('long-stay-link').addEventListener('click', function(e) {     
+                e.preventDefault();     
+                document.getElementById('calendar-days').scrollIntoView({ behavior: 'smooth', block: 'center' }); 
+            });
+
+            document.getElementById('prev-month').addEventListener('click', function() {
+                currentMonth--;
+                if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+                renderCalendar();
+            });
+            
+            document.getElementById('next-month').addEventListener('click', function() {
+                currentMonth++;
+                if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+                renderCalendar();
+            });
+            
+            document.getElementById('btn-back').addEventListener('click', function() {
+                formPanel.classList.remove('translate-x-0');
+                formPanel.classList.add('translate-x-full');
+                timePanel.classList.remove('-translate-x-full');
+                timePanel.classList.add('translate-x-0');
+                
+                timePanel.innerHTML = originalTimePanelHTML;
+                
+                // Desmarcar todas las tarjetas al volver
+                pricingCards.forEach(c => {
+                    c.classList.remove('border-blue-600', 'shadow-xl', 'shadow-blue-600/10', 'shadow-blue-600/20');
+                    c.classList.add('border-slate-200');
+                    c.style.borderWidth = '2px';
+
+                    const check = c.querySelector('.check-icon');
+                    if (check) check.classList.add('hidden');
+                });
+
+                checkoutDate = null; 
+                updateDisplay();
+                renderCalendar();
+            });
+            
+            document.getElementById('booking-form').addEventListener('submit', function(e) {
+                e.preventDefault(); 
+                
+                const nombre = document.querySelector('#booking-form input[type="text"]').value;
+                const huespedes = document.querySelector('#booking-form select').value;
+                const tieneEstacionamiento = document.getElementById('parking-check').checked;
+                
+                const options = { day: 'numeric', month: 'long' };
+                const inStr = checkinDate.toLocaleDateString('es-ES', options);
+                const outStr = checkoutDate.toLocaleDateString('es-ES', options);
+                const nights = Math.round((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
+                
+                const precioElement = document.getElementById('total-price-display');
+                const precioTotalTexto = precioElement ? precioElement.textContent : 'Pendiente';
+
+                let mensaje = `¡Hola! Quiero confirmar una reserva:\n\n`;
+                mensaje += ` *Nombre:* ${nombre}\n`;
+                mensaje += ` *Entrada:* ${inStr}\n`;
+                mensaje += ` *Salida:* ${outStr}\n`;
+                mensaje += ` *Noches:* ${nights}\n`;
+                mensaje += ` *Huéspedes:* ${huespedes}\n`;
+                mensaje += ` *Estacionamiento:* ${tieneEstacionamiento ? 'Sí, por favor' : 'No, gracias'}\n\n`;
+                mensaje += ` *Total a pagar:* ${precioTotalTexto}\n\n`;
+                mensaje += `¿Me confirman disponibilidad?`;
+
+                const miNumeroWhatsApp = '56935817423'; 
+                
+                const urlWhatsApp = `https://wa.me/${miNumeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+                window.open(urlWhatsApp, '_blank');
+                
+                document.getElementById('success-date').innerHTML = "del " + inStr + " al " + outStr;
+                
+                formPanel.classList.remove('translate-x-0');
+                formPanel.classList.add('-translate-x-full');
+                successPanel.classList.remove('translate-x-full');
+                successPanel.classList.add('translate-x-0');
+            });
+
+            document.getElementById('btn-reset').addEventListener('click', function() {
+                checkinDate = null;
+                checkoutDate = null;
+                document.getElementById('booking-form').reset();
+                
+                successPanel.classList.remove('translate-x-0');
+                successPanel.classList.add('translate-x-full');
+                timePanel.classList.remove('-translate-x-full');
+                timePanel.classList.add('translate-x-0');
+                
+                timePanel.innerHTML = originalTimePanelHTML;
+                
+                updateDisplay();
+                renderCalendar();
+            });
+
+            // Iniciar
+            syncICal(); 
+            updateDisplay();
+        }
+
+        document.addEventListener('DOMContentLoaded', initBookingSystem);
+    </script>
+</body>
+</html>
